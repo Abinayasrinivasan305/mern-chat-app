@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getRecieverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req,res)=>{
     try{
@@ -30,14 +31,26 @@ export const sendMessage = async (req,res)=>{
         if(newMessage){
             conversation.messages.push(newMessage._id);
         }
-       //we created but not updated to database the conversation and message
+    //we created but not updated to database the conversation and message
 
       // await conversation.save();
        //await newMessage.save();
 
         //optimized line (this will run in parallel)
 
-      await Promise.all([conversation.save(),newMessage.save()])
+    await Promise.all([conversation.save(),newMessage.save()])
+
+    //SOCKET IO FUNCTIONALITY
+
+    const recieverSocketId= getRecieverSocketId(recieverId);
+
+    if(recieverSocketId){  //if reciever socket is not undefined meanse u send the message which is saved in db so use io.to instead of io.emit 
+        //io.to(receiverSocketId).emit() used to send specific client
+        io.to(recieverSocketId).emit("newMessage",newMessage) 
+    }
+       
+
+
       
       res.status(201).json(newMessage)  ;
     }catch(error){

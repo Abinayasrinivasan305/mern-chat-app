@@ -2,9 +2,11 @@ import React, { useEffect, useRef } from 'react'
 import Message from './Message'
 import useGetMessages from '../../Hooks/useGetMessages'
 import MessageSkeleton from '../skeletons/MessageSkeleton';
+import useListenMessages from '../../Hooks/useListenMessages';
 
 const Messages = () => {
   const {loading,messages}=useGetMessages();
+  useListenMessages(); //this listen for any incoming msg
   const lastMessageRef=useRef();
 
   //for automatic scrolling to end of the chats

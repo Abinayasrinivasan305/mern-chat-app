@@ -11,8 +11,9 @@ import userRoutes from "./routes/user.routes.js";
 
 
 import connectToMongoDB from "./db/connecttoMongoDB.js";
+import { app, server } from "./socket/socket.js";
 
-const app = express();
+
 const PORT=process.env.PORT || 5000;  //port variable value update process.env.port or either 5000 //easily can'get the value process.env.PORT first u require the package
 
 
@@ -44,7 +45,7 @@ app.use("/api/users",userRoutes)
 
 
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
 
     console.log(`Server running on port ${PORT}`)
     connectToMongoDB();
