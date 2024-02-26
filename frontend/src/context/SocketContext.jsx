@@ -16,7 +16,7 @@ export const SocketContextProvider= ({children}) =>{
 
     useEffect(()=>{
         if(authUser){
-            const socket = io("http://localhost:5000",{
+            const socket = io("https://mern-chat-app-jvy8.onrender.com/",{
                 query:{
                     userId: authUser._id ,                 //we get the user id which is the authenticated user id (we get in socket handshake that's why)
                 },
